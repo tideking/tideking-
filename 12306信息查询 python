@@ -1,0 +1,83 @@
+# coding=utf-8
+
+import json
+import requests
+from urllib import urlopen
+from stion import sta
+from prettytable import PrettyTable
+from colorama import Fore
+import time
+from Tkinter import *
+requests.packages.urllib3.disable_warnings()
+
+#print sta
+sta_r = {v: k for k, v in sta.items()}   #将字典keys与value调换
+
+#查询要求：
+nowTime = time.strftime("%Y-%m-%d ", time.localtime())
+query_date = raw_input("请输入出发日期如(2017-01-24),要求大于: "+nowTime+'\t' ,)
+fro = raw_input("请输入起始站名: ",).decode('utf-8')
+to = raw_input("请输入终点站名: ",).decode('utf-8')
+query_from = sta[fro]
+query_to = sta[to]
+
+#爬网
+url ="https://kyfw.12306.cn/otn/leftTicket/queryZ?leftTicketDTO.train_date={}" \
+     "&leftTicketDTO.from_station={}&leftTicketDTO.to_station={}" \
+     "&purpose_codes=ADULT".format(query_date, query_from, query_to)  # 12306有时会将queryZ变换
+print url
+dd = urlopen(url)
+vv = dd.read()
+Jsd = json.loads(vv)
+
+
+#做表且定标题s
+pt = PrettyTable(["车次", "车站", "时间","经历时", "一等座" ,"二等座", "软卧", "硬卧", "硬座","无座"])
+
+#提取信息
+tt = len(Jsd[u'data'][u'result'])
+train = Jsd[u'data'][u'result']
+for i in range(tt):
+    sort = train[i].split('|')
+    train_no = sort[3]
+    # 出发站
+    from_station_code = sort[6]
+    from_station_name = sta_r[from_station_code]
+    # 终点站
+    to_station_code = sort[7]
+    to_station_name = sta_r[to_station_code]
+    # 出发时间
+    start_time = sort[8]
+    # 到达时间
+    arrive_time = sort[9]
+    # 总耗时
+    all_time = sort[10]
+    # 一等座
+    first_class = sort[31] or '--'
+    # 二等座
+    second_class = sort[30] or '--'
+    # 软卧
+    soft_sleep = sort[23] or '--'
+    # 硬卧
+    hard_sleep = sort[28] or '--'
+    # 硬座
+    hard_seat = sort[29] or '--'
+    # 无座
+    no_seat = sort[26] or '--'
+
+    #给pt表添加车次信息
+    pt.add_row([
+        # 对特定文字添加颜色
+        Fore.BLUE + train_no,
+        '\n'.join([Fore.GREEN + from_station_name + Fore.RESET,
+                   Fore.RED + to_station_name + Fore.RESET]),
+        '\n'.join([Fore.GREEN + start_time + Fore.RESET, Fore.RED + arrive_time + Fore.RESET]),
+        all_time,
+        first_class,
+        second_class,
+        soft_sleep,
+        hard_sleep,
+        hard_seat,
+        no_seat
+    ])
+print pt
