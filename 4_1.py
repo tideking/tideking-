@@ -45,6 +45,9 @@ for j in range(len(s)-1):
     
 print s[4]
 """
+
+
+#贪婪算法
 w='AGTATTGGCAATC'
 z='AATCGATG'
 u='ATGCAAACCT'
