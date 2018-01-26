@@ -3,7 +3,7 @@
   url = 'https://kyfw.12306.cn/otn/resources/js/framework/station_name.js?station_version=1.9018'
 如  ：网页上 @bjb|北京北|VAP|beijingbei|bjb|0@bjd|北京东|BOP|beijingdong|bjd|1     编译器上：u'\u961c\u5357': u'FNH'
 将上列信息转换为字典 如｛北京北：bjb,北京东：bjd.....｝
-# 法1： 用re正则选出站名和大写编码               |                # 法2：根据信息分割提取
+ 法1： 用re正则选出站名和大写编码               |                法2：根据信息分割提取
  pattern = u'([\u4e00-\u9fa5]+)\|([A-Z]+)'     |                   data = r.text     ;      data = data.split('@')
  result = re.findall(pattern, r.text)          |                   sta = {}   for i in data: 
  station = dict(result)                        |                                 if '|' in i:
