@@ -1,0 +1,21 @@
+# time usage
+
+
+# coding=utf-8
+import time
+
+time.localtime() #显示当地时间 
+#结果为time.struct_time(tm_year=2018, tm_mon=1, tm_mday=26, tm_hour=16, tm_min=0, tm_sec=53, tm_wday=4, tm_yday=26, tm_isdst=0)
+
+time.asctime()  #显示当前时间
+#结果：Fri Jan 26 16:00:53 2018
+
+time.strftime("%Y-%m-%d %X", time.localtime())  # 将时间变为字符串类型
+#结果：2018-01-26 16:00:53
+
+time.strptime('2011-05-05 16:37:06', '%Y-%m-%d %X')  # 将字符串类型时间转换为时间型
+#结果： time.struct_time(tm_year=2011, tm_mon=5, tm_mday=5, tm_hour=16, tm_min=37, tm_sec=6, tm_wday=3, tm_yday=125, tm_isdst=-1)
+
+
+time.time()   #将时间型变为时间戳       可用来比较时间大小
+
