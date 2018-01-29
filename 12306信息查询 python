@@ -81,3 +81,12 @@ for i in range(tt):
         no_seat
     ])
 print pt
+
+'''
+requests --------禁用网站安全警告
+from urllib import urlopen-------打开网页
+from station import sta--------提取储存的信息｛u'\u961c\u5357': u'FNH'｝
+prettytable------做表格
+colorama --------添色
+time----------提示当前时间，作为最先出发日期
+'''
